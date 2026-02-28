@@ -1,0 +1,477 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   ROOT
+============================================================ */
+:root {
+  --sidebar-width: 72px;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   ★ MATTE-GLASS DESIGN TOKENS
+   Each theme defines:
+     --bg            base page background
+     --surface       card / panel (glass-tinted)
+     --surface2      input / secondary panel
+     --glass-blur    backdrop-filter blur amount
+     --glass-border  rim light on glass elements
+     --accent        primary action color (matte, not neon)
+     --accent-dim    30% opacity accent for glows
+     --accent-glow   subtle ambient shadow
+     --text          primary text
+     --text-dim      secondary / label text
+     --border        subtle dividers
+     --border2       stronger separators
+     --bg-deco       decorative background layer
+     --bg-deco-size  bg-size for deco
+============================================================ */
+
+/* ─── GLASS UTILITY ─────────────────────────────────────────
+   surfaces use backdrop-filter for real glass feel.
+   Falls back gracefully when backdrop-filter is unavailable. */
+.glass {
+  backdrop-filter: blur(var(--glass-blur, 16px)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--glass-blur, 16px)) saturate(1.4);
+  background: var(--surface);
+  border: 1px solid var(--glass-border);
+}
+
+/* ============================================================
+   THEME 1 — NOTHING PHONE
+   Charcoal matte + ember orange, soft dot grid
+============================================================ */
+.theme-nothing {
+  --bg:            #0d0d0d;
+  --surface:       rgba(22, 22, 22, 0.80);
+  --surface2:      rgba(28, 28, 28, 0.90);
+  --glass-blur:    18px;
+  --glass-border:  rgba(255,255,255,0.06);
+  --accent:        #e8401a;          /* ember — softer than neon red */
+  --accent-dim:    rgba(232,64,26,0.22);
+  --accent-glow:   rgba(232,64,26,0.18);
+  --text:          #e8e8e5;
+  --text-dim:      #5a5a5a;
+  --border:        rgba(255,255,255,0.055);
+  --border2:       rgba(255,255,255,0.10);
+  --bg-deco:       radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+  --bg-deco-size:  22px 22px;
+}
+
+/* ============================================================
+   THEME 2 — ANDROID 16
+   Deep navy matte + periwinkle, faint aurora deco
+============================================================ */
+.theme-android16 {
+  --bg:            #10101e;
+  --surface:       rgba(20, 19, 34, 0.82);
+  --surface2:      rgba(28, 26, 46, 0.92);
+  --glass-blur:    20px;
+  --glass-border:  rgba(167,139,250,0.10);
+  --accent:        #9b7ef8;          /* periwinkle — calmer than vibrant purple */
+  --accent-dim:    rgba(155,126,248,0.20);
+  --accent-glow:   rgba(155,126,248,0.15);
+  --text:          #dce3f0;
+  --text-dim:      #5c6478;
+  --border:        rgba(167,139,250,0.08);
+  --border2:       rgba(167,139,250,0.14);
+  --bg-deco:       radial-gradient(ellipse 80% 80% at 15% 10%, rgba(155,126,248,0.07), transparent),
+                   radial-gradient(ellipse 70% 70% at 85% 90%, rgba(99,102,241,0.06), transparent);
+  --bg-deco-size:  auto;
+}
+
+/* ============================================================
+   THEME 3 — DARK (Matte near-black + clean white accent)
+============================================================ */
+.theme-bw {
+  --bg:            #111111;
+  --surface:       rgba(22, 22, 22, 0.85);
+  --surface2:      rgba(30, 30, 30, 0.92);
+  --glass-blur:    16px;
+  --glass-border:  rgba(255,255,255,0.07);
+  --accent:        #ececec;
+  --accent-dim:    rgba(236,236,236,0.15);
+  --accent-glow:   rgba(236,236,236,0.10);
+  --text:          #e8e8e8;
+  --text-dim:      #555555;
+  --border:        rgba(255,255,255,0.06);
+  --border2:       rgba(255,255,255,0.11);
+  --bg-deco:       none;
+  --bg-deco-size:  auto;
+}
+
+/* ============================================================
+   THEME 4 — MIDNIGHT (Deep slate + sapphire)
+   replaces AMOLED — easier on eyes, still very dark
+============================================================ */
+.theme-amoled {
+  --bg:            #0a0c10;
+  --surface:       rgba(14, 17, 24, 0.84);
+  --surface2:      rgba(19, 23, 34, 0.92);
+  --glass-blur:    18px;
+  --glass-border:  rgba(100,180,255,0.08);
+  --accent:        #5ba3d9;          /* steel blue — not neon */
+  --accent-dim:    rgba(91,163,217,0.20);
+  --accent-glow:   rgba(91,163,217,0.12);
+  --text:          #d4dce8;
+  --text-dim:      #445060;
+  --border:        rgba(100,180,255,0.07);
+  --border2:       rgba(100,180,255,0.12);
+  --bg-deco:       radial-gradient(ellipse 60% 40% at 50% 5%, rgba(91,163,217,0.06), transparent);
+  --bg-deco-size:  auto;
+}
+
+/* ============================================================
+   THEME 5 — OCEAN
+   Muted navy + teal, calm coastal palette
+============================================================ */
+.theme-ocean {
+  --bg:            #080f18;
+  --surface:       rgba(12, 20, 32, 0.84);
+  --surface2:      rgba(16, 28, 45, 0.92);
+  --glass-blur:    18px;
+  --glass-border:  rgba(34,211,180,0.09);
+  --accent:        #2abfa0;          /* muted teal */
+  --accent-dim:    rgba(42,191,160,0.20);
+  --accent-glow:   rgba(42,191,160,0.12);
+  --text:          #cce8e4;
+  --text-dim:      #3d5e5a;
+  --border:        rgba(34,211,180,0.07);
+  --border2:       rgba(34,211,180,0.12);
+  --bg-deco:       radial-gradient(ellipse 60% 40% at 50% 0%, rgba(42,191,160,0.06), transparent);
+  --bg-deco-size:  auto;
+}
+
+/* ============================================================
+   THEME 6 — SUNSET
+   Warm charcoal + muted amber/clay
+============================================================ */
+.theme-sunset {
+  --bg:            #130d08;
+  --surface:       rgba(22, 14, 8, 0.84);
+  --surface2:      rgba(32, 20, 10, 0.92);
+  --glass-blur:    18px;
+  --glass-border:  rgba(220,130,60,0.10);
+  --accent:        #cf7035;          /* terracotta clay */
+  --accent-dim:    rgba(207,112,53,0.22);
+  --accent-glow:   rgba(207,112,53,0.14);
+  --text:          #ecddd2;
+  --text-dim:      #5a3e2a;
+  --border:        rgba(220,130,60,0.08);
+  --border2:       rgba(220,130,60,0.14);
+  --bg-deco:       radial-gradient(ellipse 80% 60% at 80% 100%, rgba(207,112,53,0.07), transparent),
+                   radial-gradient(ellipse 60% 60% at 10% 80%, rgba(180,72,80,0.06), transparent);
+  --bg-deco-size:  auto;
+}
+
+/* ============================================================
+   THEME 7 — FOREST
+   Dark moss + sage green, nature calm
+============================================================ */
+.theme-forest {
+  --bg:            #090f09;
+  --surface:       rgba(12, 18, 12, 0.84);
+  --surface2:      rgba(16, 26, 16, 0.92);
+  --glass-blur:    18px;
+  --glass-border:  rgba(80,180,100,0.10);
+  --accent:        #4aaa68;          /* moss green, not lime */
+  --accent-dim:    rgba(74,170,104,0.22);
+  --accent-glow:   rgba(74,170,104,0.14);
+  --text:          #d2ecd6;
+  --text-dim:      #3a5c3e;
+  --border:        rgba(80,180,100,0.08);
+  --border2:       rgba(80,180,100,0.13);
+  --bg-deco:       radial-gradient(ellipse 60% 80% at 20% 20%, rgba(74,170,104,0.06), transparent);
+  --bg-deco-size:  auto;
+}
+
+/* ============================================================
+   THEME 8 — CYBERPUNK
+   Near-black + warm amber-gold (less neon)
+============================================================ */
+.theme-cyberpunk {
+  --bg:            #0c0b08;
+  --surface:       rgba(16, 15, 10, 0.84);
+  --surface2:      rgba(22, 20, 12, 0.92);
+  --glass-blur:    16px;
+  --glass-border:  rgba(200,168,60,0.10);
+  --accent:        #c8a83c;          /* warm gold, not neon yellow */
+  --accent-dim:    rgba(200,168,60,0.22);
+  --accent-glow:   rgba(200,168,60,0.14);
+  --text:          #f0edda;
+  --text-dim:      #5a5228;
+  --border:        rgba(200,168,60,0.08);
+  --border2:       rgba(200,168,60,0.14);
+  --bg-deco:       repeating-linear-gradient(90deg, rgba(200,168,60,0.018) 0, rgba(200,168,60,0.018) 1px, transparent 1px, transparent 40px),
+                   repeating-linear-gradient(0deg,  rgba(200,168,60,0.018) 0, rgba(200,168,60,0.018) 1px, transparent 1px, transparent 40px);
+  --bg-deco-size:  auto;
+}
+
+/* ============================================================
+   THEME 9 — ROSE GOLD
+   Warm charcoal + dusty rose (matte, not glossy)
+============================================================ */
+.theme-rosegold {
+  --bg:            #120a0e;
+  --surface:       rgba(22, 12, 17, 0.84);
+  --surface2:      rgba(30, 17, 24, 0.92);
+  --glass-blur:    18px;
+  --glass-border:  rgba(200,110,140,0.10);
+  --accent:        #c06480;          /* dusty rose */
+  --accent-dim:    rgba(192,100,128,0.22);
+  --accent-glow:   rgba(192,100,128,0.14);
+  --text:          #ecdae0;
+  --text-dim:      #5e3040;
+  --border:        rgba(200,110,140,0.08);
+  --border2:       rgba(200,110,140,0.14);
+  --bg-deco:       radial-gradient(ellipse 70% 50% at 30% 30%, rgba(192,100,128,0.07), transparent);
+  --bg-deco-size:  auto;
+}
+
+/* ============================================================
+   THEME 10 — AURORA
+   Deep midnight + emerald shimmer
+============================================================ */
+.theme-aurora {
+  --bg:            #07090f;
+  --surface:       rgba(10, 13, 22, 0.84);
+  --surface2:      rgba(14, 18, 30, 0.92);
+  --glass-blur:    20px;
+  --glass-border:  rgba(52,211,153,0.09);
+  --accent:        #2fb386;          /* muted emerald */
+  --accent-dim:    rgba(47,179,134,0.22);
+  --accent-glow:   rgba(47,179,134,0.14);
+  --text:          #d4ecdf;
+  --text-dim:      #3a5f50;
+  --border:        rgba(52,211,153,0.07);
+  --border2:       rgba(52,211,153,0.12);
+  --bg-deco:       radial-gradient(ellipse 80% 50% at 10% 10%, rgba(47,179,134,0.07), transparent),
+                   radial-gradient(ellipse 60% 40% at 90% 90%, rgba(130,110,210,0.06), transparent);
+  --bg-deco-size:  auto;
+}
+
+/* ============================================================
+   THEME 11 — LIGHT (Clean white matte + dark ink)
+============================================================ */
+.theme-light {
+  --bg:            #f5f4f0;          /* warm off-white, not blinding */
+  --surface:       rgba(255, 255, 255, 0.75);
+  --surface2:      rgba(240, 238, 234, 0.90);
+  --glass-blur:    20px;
+  --glass-border:  rgba(0,0,0,0.08);
+  --accent:        #2563a8;          /* navy blue — matte, accessible */
+  --accent-dim:    rgba(37,99,168,0.15);
+  --accent-glow:   rgba(37,99,168,0.10);
+  --text:          #1a1a1a;
+  --text-dim:      #6b6b6b;
+  --border:        rgba(0,0,0,0.08);
+  --border2:       rgba(0,0,0,0.14);
+  --bg-deco:       none;
+  --bg-deco-size:  auto;
+}
+
+/* ============================================================
+   THEME 12 — LIGHT WARM (Parchment + rust accent)
+============================================================ */
+.theme-light-warm {
+  --bg:            #f7f0e6;          /* parchment */
+  --surface:       rgba(255, 251, 244, 0.78);
+  --surface2:      rgba(245, 238, 224, 0.92);
+  --glass-blur:    18px;
+  --glass-border:  rgba(120,80,40,0.08);
+  --accent:        #b5521a;          /* matte rust */
+  --accent-dim:    rgba(181,82,26,0.18);
+  --accent-glow:   rgba(181,82,26,0.10);
+  --text:          #1e1612;
+  --text-dim:      #7a6050;
+  --border:        rgba(120,80,40,0.09);
+  --border2:       rgba(120,80,40,0.16);
+  --bg-deco:       none;
+  --bg-deco-size:  auto;
+}
+
+/* ============================================================
+   SHARED UTILITIES
+============================================================ */
+.themed-bg      { background-color: var(--bg); }
+.themed-surface { background-color: var(--surface); }
+.themed-surface2 { background-color: var(--surface2); }
+.themed-accent  { color: var(--accent); }
+.themed-text    { color: var(--text); }
+.themed-dim     { color: var(--text-dim); }
+.themed-border  { border-color: var(--border); }
+.themed-border2 { border-color: var(--border2); }
+.themed-accent-bg { background-color: var(--accent); }
+.themed-glow    { box-shadow: 0 0 24px var(--accent-glow); }
+
+.themed-transition {
+  transition: background-color 0.35s ease, border-color 0.35s ease,
+              color 0.35s ease, box-shadow 0.35s ease, opacity 0.35s ease;
+}
+
+/* ── Background decoration layer ── */
+.theme-bg-deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--bg-deco);
+  background-size: var(--bg-deco-size);
+  z-index: 0;
+}
+
+/* ── Glass panel helper ── */
+.glass-panel {
+  background: var(--surface);
+  backdrop-filter: blur(var(--glass-blur, 16px)) saturate(1.3);
+  -webkit-backdrop-filter: blur(var(--glass-blur, 16px)) saturate(1.3);
+  border: 1px solid var(--glass-border);
+}
+
+/* ── Subtle inner rim (glass highlight on top edge) ── */
+.glass-rim {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.28);
+}
+
+/* Light themes need different rim */
+.theme-light .glass-rim,
+.theme-light-warm .glass-rim {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 4px 20px rgba(0,0,0,0.10);
+}
+
+/* ============================================================
+   SCROLLBAR
+============================================================ */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--surface, #111); }
+::-webkit-scrollbar-thumb { background: var(--border2, #333); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim, #666); }
+
+/* ============================================================
+   FULLSCREEN OVERLAY
+============================================================ */
+.fullscreen-overlay {
+  position: fixed; inset: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ============================================================
+   NOTHING PHONE ANIMATIONS
+============================================================ */
+@keyframes glyphScan {
+  0%   { transform: scaleX(0); opacity: 0; }
+  30%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+.glyph-bar { animation: glyphScan 2s ease-in-out infinite; transform-origin: left center; }
+.glyph-bar:nth-child(2) { animation-delay: 0.3s; }
+.glyph-bar:nth-child(3) { animation-delay: 0.6s; }
+.glyph-bar:nth-child(4) { animation-delay: 0.9s; }
+
+@keyframes nothingBlink { 0%,45%,55%,100% { opacity:1; } 50% { opacity:0; } }
+.nothing-colon { animation: nothingBlink 1s step-start infinite; }
+
+/* ============================================================
+   ANDROID 16
+============================================================ */
+@keyframes arcGlow {
+  0%,100% { filter: drop-shadow(0 0 5px var(--accent)); }
+  50%      { filter: drop-shadow(0 0 14px var(--accent)) drop-shadow(0 0 24px var(--accent)); }
+}
+.arc-glow { animation: arcGlow 2.4s ease-in-out infinite; }
+
+/* ============================================================
+   DOT PULSE
+============================================================ */
+@keyframes dotPulse {
+  0%,100% { opacity:0.2; transform:scale(0.8); }
+  50%     { opacity:1;   transform:scale(1.1); }
+}
+
+/* ============================================================
+   SLIDE / MODAL ANIMATIONS
+============================================================ */
+@keyframes slideInUp {
+  from { transform: translateY(28px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.modal-enter { animation: slideInUp 0.22s ease-out; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-enter { animation: fadeInUp 0.38s ease-out both; }
+
+/* ============================================================
+   CALENDAR TODAY GLOW  
+============================================================ */
+@keyframes todayGlow {
+  0%,100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+  50%     { box-shadow: 0 0 10px 3px var(--accent-glow); }
+}
+.today-cell { animation: todayGlow 2.5s ease-in-out infinite; }
+
+/* ============================================================
+   TIMER PULSE
+============================================================ */
+@keyframes pulseGreen {
+  0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+  50%     { box-shadow: 0 0 0 10px rgba(34,197,94,0.18); }
+}
+.timer-done-pulse { animation: pulseGreen 1.5s ease-in-out infinite; }
+
+/* ============================================================
+   RIPPLE
+============================================================ */
+@keyframes ripple { to { transform: scale(4); opacity: 0; } }
+.ripple {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  animation: ripple 0.55s linear; pointer-events: none;
+}
+
+/* ============================================================
+   SHIMMER
+============================================================ */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.shimmer-btn {
+  background: linear-gradient(90deg, var(--accent) 0%, var(--surface2) 50%, var(--accent) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* ============================================================
+   AUTOFILL FIX
+============================================================ */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--surface2) inset;
+  -webkit-text-fill-color: var(--text);
+  transition: background-color 5000s ease-in-out 0s;
+}
