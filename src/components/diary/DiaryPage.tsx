@@ -21,10 +21,10 @@ export default function DiaryPage() {
         body.length > max ? body.slice(0, max) + '…' : body;
 
     return (
-        <div className="min-h-screen px-8 py-10">
+        <div className="min-h-screen px-4 sm:px-8 py-10 w-full overflow-hidden">
             <div className="max-w-3xl mx-auto">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4 w-full">
                     <div>
                         <h1 className="text-xl font-semibold" style={{ color: 'var(--text)' }}>📓 Diary</h1>
                         <p className="text-xs mt-0.5" style={{ color: 'var(--text-dim)' }}>
@@ -33,7 +33,7 @@ export default function DiaryPage() {
                     </div>
                     <button
                         onClick={() => setEditingEntry(null)}
-                        className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-semibold themed-transition hover:brightness-110"
+                        className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-semibold themed-transition hover:brightness-110 shrink-0 w-full sm:w-auto"
                         style={{ background: 'var(--accent)', color: '#000' }}>
                         + New Entry
                     </button>

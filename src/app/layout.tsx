@@ -9,6 +9,12 @@ export const metadata: Metadata = {
     description: 'A premium productivity suite with clock themes, timer, stopwatch, calendar, diary, calculators, converters, and invoice generator.',
 };
 
+export const viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" suppressHydrationWarning>

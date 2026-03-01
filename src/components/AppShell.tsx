@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme, THEMES } from '@/context/ThemeContext';
 import clsx from 'clsx';
+import { Menu, X } from 'lucide-react';
 
 const navItems = [
     { href: '/', icon: '🕐', label: 'Clock' },
@@ -50,6 +51,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const { theme, setTheme } = useTheme();
     const [themeOpen, setThemeOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     // ── Scroll-hide / reveal header ──────────────────────────────────────────
     const [headerVisible, setHeaderVisible] = useState(false);   // hidden on load
@@ -93,9 +95,25 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex min-h-screen themed-bg">
 
-            {/* ── Sidebar (always visible) ─────────────────────────────────── */}
+            {/* ── Mobile Sidebar Overlay Backdrop ──────────────────────────── */}
+            <AnimatePresence>
+                {sidebarOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setSidebarOpen(false)}
+                        className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
+                    />
+                )}
+            </AnimatePresence>
+
+            {/* ── Sidebar (always visible on md+, toggleable on mobile) ────── */}
             <aside
-                className="fixed left-0 top-0 h-full z-40 flex flex-col items-center py-5 gap-2 themed-transition glass-panel glass-rim"
+                className={clsx(
+                    "fixed top-0 h-full z-50 flex flex-col items-center py-5 gap-2 themed-transition glass-panel glass-rim md:left-0",
+                    sidebarOpen ? "left-0" : "-left-full"
+                )}
                 style={{ width: 72 }}>
 
                 {/* Logo */}
@@ -207,19 +225,26 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </AnimatePresence>
 
             {/* ── Main content area ───────────────────────────────────────── */}
-            <div className="flex-1 flex flex-col" style={{ marginLeft: 72 }}>
+            <div className="flex-1 flex flex-col md:ml-[72px] ml-0 w-full transition-all duration-300">
 
                 {/* ── Top bar: slides UP on load / scrolling down,
                               slides DOWN to reveal on scroll up ──────────── */}
                 <motion.div
-                    className="sticky top-0 z-30 flex items-center px-8 py-3 themed-transition glass-panel glass-rim"
+                    className="sticky top-0 z-30 flex items-center px-4 sm:px-8 py-3 themed-transition glass-panel glass-rim"
                     animate={{
                         y: headerVisible ? 0 : -64,
                         opacity: headerVisible ? 1 : 0,
                     }}
                     initial={{ y: -64, opacity: 0 }}
                     transition={{ type: 'spring', stiffness: 360, damping: 36 }}>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setSidebarOpen(true)}
+                            className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg themed-transition hover:bg-black/10 dark:hover:bg-white/10"
+                            style={{ color: 'var(--text)' }}
+                        >
+                            <Menu size={20} />
+                        </button>
                         <span className="text-base">{currentPage?.icon}</span>
                         <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
                             {currentPage?.label ?? 'Openclaw'}

@@ -42,19 +42,19 @@ export default function CalendarPage() {
     const gridContent = (
         <div className="flex flex-col gap-4 w-full">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <button onClick={prevMonth}
-                    className="w-9 h-9 rounded-xl flex items-center justify-center text-sm themed-transition hover:opacity-80"
+                    className="w-9 h-9 rounded-xl flex items-center justify-center text-sm themed-transition hover:opacity-80 shrink-0"
                     style={{ background: 'var(--surface2)', color: 'var(--text)', border: '1px solid var(--border2)' }}>
                     ‹
                 </button>
                 <div className="text-center">
-                    <h2 className="text-lg font-semibold" style={{ color: 'var(--text)' }}>
+                    <h2 className="text-lg font-semibold whitespace-nowrap" style={{ color: 'var(--text)' }}>
                         {MONTHS[month]} {year}
                     </h2>
                 </div>
                 <button onClick={nextMonth}
-                    className="w-9 h-9 rounded-xl flex items-center justify-center text-sm themed-transition hover:opacity-80"
+                    className="w-9 h-9 rounded-xl flex items-center justify-center text-sm themed-transition hover:opacity-80 shrink-0"
                     style={{ background: 'var(--surface2)', color: 'var(--text)', border: '1px solid var(--border2)' }}>
                     ›
                 </button>
@@ -151,18 +151,18 @@ export default function CalendarPage() {
     }
 
     return (
-        <div className="min-h-screen px-8 py-10">
+        <div className="min-h-screen px-4 sm:px-8 py-10 w-full overflow-hidden">
             <div className="max-w-2xl mx-auto">
-                <div className="flex items-center justify-between mb-8">
-                    <h1 className="text-xl font-semibold" style={{ color: 'var(--text)' }}>📅 Calendar</h1>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4 w-full">
+                    <h1 className="text-xl font-semibold shrink-0" style={{ color: 'var(--text)' }}>📅 Calendar</h1>
                     <button onClick={() => setFullscreen(true)}
-                        className="px-4 py-2 rounded-xl text-xs font-medium themed-transition"
+                        className="px-4 py-2 rounded-xl text-xs font-medium themed-transition shrink-0"
                         style={{ background: 'var(--surface2)', color: 'var(--text-dim)', border: '1px solid var(--border2)' }}>
                         ⛶ Full Screen
                     </button>
                 </div>
 
-                <div className="rounded-3xl p-6 themed-transition"
+                <div className="rounded-3xl p-4 sm:p-6 themed-transition w-full overflow-hidden"
                     style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
                     {gridContent}
                 </div>

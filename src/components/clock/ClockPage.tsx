@@ -202,19 +202,19 @@ export default function ClockPage() {
     const clockContent = tab === 'gallery' ? (
         <ClockGallery />
     ) : (
-        <div className="flex flex-col items-center w-full">
+        <div className="flex flex-col items-center w-full mt-4 sm:mt-0">
             <motion.div
                 className="flex flex-col items-center w-full"
                 animate={{ scale: combinedScale, opacity: clockOpacity }}
                 transition={{ type: 'spring', stiffness: 260, damping: 22 }}>
                 {!locLoading && tab === 'clock' && (
-                    <div className="flex items-center gap-2 mb-6 px-4 py-2 rounded-full text-sm"
+                    <div className="flex items-center gap-2 mb-6 px-4 py-2 rounded-full text-xs sm:text-sm"
                         style={{ background: 'var(--surface2)', color: 'var(--text-dim)', border: '1px solid var(--border2)' }}>
                         <span>📍</span>
-                        <span className="font-mono text-xs">Auto: {timezone}</span>
+                        <span className="font-mono text-[10px] sm:text-xs">Auto: {timezone}</span>
                     </div>
                 )}
-                <div className={clsx('w-full flex justify-center', tab === 'clock' ? '' : 'max-w-lg mx-auto px-6')}>
+                <div className={clsx('w-full flex justify-center', tab === 'clock' ? '' : 'max-w-lg mx-auto px-4 sm:px-6')}>
                     {tab === 'clock' && !locLoading && <ClockFace timezone={timezone} />}
                     {tab === 'timer' && <Timer />}
                     {tab === 'stopwatch' && <Stopwatch />}
@@ -316,7 +316,7 @@ export default function ClockPage() {
                         {/* ── Position ── */}
                         <section className="flex flex-col gap-2">
                             <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--accent)' }}>Clock Position</p>
-                            <div className="grid grid-cols-2 gap-1">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 px-1">
                                 {(['center', 'top-left', 'top-right', 'floating'] as ClockPosition[]).map(p => (
                                     <button key={p} onClick={() => setClockPosition(p)}
                                         className="py-2 rounded-xl text-xs font-medium capitalize themed-transition"
@@ -454,7 +454,7 @@ export default function ClockPage() {
                 <div className="theme-bg-deco" />
                 <div className="relative z-10 w-full max-w-2xl mx-auto">
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
                         <h1 className="text-xl font-semibold" style={{ color: 'var(--text)' }}>
                             {tab === 'clock' ? '🕐 Clock' : tab === 'timer' ? '⏱ Timer' : tab === 'gallery' ? '🗂 Gallery' : '⏩ Stopwatch'}
                         </h1>
