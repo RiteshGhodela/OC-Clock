@@ -11,9 +11,10 @@ import BWClock from './BWClock';
 import Timer from './Timer';
 import Stopwatch from './Stopwatch';
 import ClockGallery from './ClockGallery';
+import AlarmClock from './AlarmClock';
 import clsx from 'clsx';
 
-type Tab = 'clock' | 'timer' | 'stopwatch' | 'gallery';
+type Tab = 'clock' | 'alarm' | 'timer' | 'stopwatch' | 'gallery';
 
 const IDLE_OPTION_LABELS: Record<number, string> = {
     30000: '30 sec',
@@ -194,6 +195,7 @@ export default function ClockPage() {
 
     const tabs: { id: Tab; label: string }[] = [
         { id: 'clock', label: '🕐 Clock' },
+        { id: 'alarm', label: '⏰ Alarm' },
         { id: 'timer', label: '⏱ Timer' },
         { id: 'stopwatch', label: '⏩ Stopwatch' },
         { id: 'gallery', label: '🗂 Gallery' },
@@ -216,6 +218,7 @@ export default function ClockPage() {
                 )}
                 <div className={clsx('w-full flex justify-center', tab === 'clock' ? '' : 'max-w-lg mx-auto px-4 sm:px-6')}>
                     {tab === 'clock' && !locLoading && <ClockFace timezone={timezone} />}
+                    {tab === 'alarm' && <AlarmClock />}
                     {tab === 'timer' && <Timer />}
                     {tab === 'stopwatch' && <Stopwatch />}
                 </div>
@@ -456,7 +459,7 @@ export default function ClockPage() {
                     {/* Header */}
                     <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
                         <h1 className="text-xl font-semibold" style={{ color: 'var(--text)' }}>
-                            {tab === 'clock' ? '🕐 Clock' : tab === 'timer' ? '⏱ Timer' : tab === 'gallery' ? '🗂 Gallery' : '⏩ Stopwatch'}
+                            {tab === 'clock' ? '🕐 Clock' : tab === 'timer' ? '⏱ Timer' : tab === 'alarm' ? '⏰ Alarm' : tab === 'gallery' ? '🗂 Gallery' : '⏩ Stopwatch'}
                         </h1>
                         <div className="flex gap-2">
                             <button onClick={() => setSettingsOpen(o => !o)}

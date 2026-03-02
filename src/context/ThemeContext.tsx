@@ -59,7 +59,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         // Read synchronously to avoid a theme flash on load.
         // getItem guards against SSR with typeof window === 'undefined'.
         if (typeof window !== 'undefined') {
-            const saved = localStorage.getItem('openclaw_theme') as Theme | null;
+            const saved = localStorage.getItem('horloge_theme') as Theme | null;
             if (saved && THEMES.find(t => t.value === saved)) return saved;
         }
         return 'nothing';
@@ -67,7 +67,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     const setTheme = (t: Theme) => {
         setThemeState(t);
-        localStorage.setItem('openclaw_theme', t);
+        localStorage.setItem('horloge_theme', t);
     };
 
     useEffect(() => {

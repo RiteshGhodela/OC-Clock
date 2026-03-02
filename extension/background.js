@@ -1,4 +1,4 @@
-// Openclaw Clock Extension — Background Service Worker
+// Horloge Clock Extension — Background Service Worker
 // Updates the browser action badge with current time every minute
 
 function updateBadge() {

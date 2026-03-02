@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { useDiaryStore, DiaryEntry } from '@/hooks/useDiaryStore';
+import { useCalendarStore } from '@/hooks/useCalendarStore';
 import DiaryEditor from './DiaryEditor';
 
 export default function DiaryPage() {
     const { entries, save, remove } = useDiaryStore();
+    const { addNote } = useCalendarStore();
     const [editingEntry, setEditingEntry] = useState<DiaryEntry | null | undefined>(undefined);
     // undefined = closed, null = new entry, DiaryEntry = editing existing
 
@@ -79,11 +81,19 @@ export default function DiaryPage() {
                                     </span>
                                 </div>
 
-                                {/* Title */}
-                                <h3 className="font-semibold text-base mb-1.5 leading-snug"
-                                    style={{ color: 'var(--text)' }}>
-                                    {entry.title || 'Untitled'}
-                                </h3>
+                                {/* Title & Category */}
+                                <div className="flex gap-2 items-center mb-1.5">
+                                    <h3 className="font-semibold text-base leading-snug"
+                                        style={{ color: 'var(--text)' }}>
+                                        {entry.title || 'Untitled'}
+                                    </h3>
+                                    {entry.category && (
+                                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md uppercase"
+                                            style={{ background: 'var(--accent)', color: '#000' }}>
+                                            {entry.category}
+                                        </span>
+                                    )}
+                                </div>
 
                                 {/* Body snippet */}
                                 <p className="text-sm leading-relaxed"
@@ -101,6 +111,10 @@ export default function DiaryPage() {
                         entry={editingEntry}
                         onSave={(data) => {
                             save({ id: editingEntry?.id, ...data });
+                            if (data.tasks && data.tasks.length > 0) {
+                                const todayKey = new Date().toISOString().split('T')[0];
+                                data.tasks.forEach((t: string) => addNote(todayKey, `[AI Note] ${t}`));
+                            }
                             setEditingEntry(undefined);
                         }}
                         onDelete={editingEntry ? () => {

@@ -65,7 +65,7 @@ const SettingsContext = createContext<SettingsContextType>({
     setHomeClockType: () => { },
 });
 
-const STORAGE_KEY = 'openclaw_settings_v2';
+const STORAGE_KEY = 'horloge_settings_v2';
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
     const [settings, setSettings] = useState<Settings>(() =>

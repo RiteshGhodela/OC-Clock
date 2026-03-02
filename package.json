@@ -1,5 +1,5 @@
 {
-  "name": "openclaw",
+  "name": "horloge",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@types/qrcode": "^1.5.6",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",

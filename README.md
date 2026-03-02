@@ -1,4 +1,4 @@
-# Openclaw — Clock, Calendar & Diary
+# Horloge — Clock, Calendar & Diary
 
 A premium time management and productivity app built with **Next.js 14**, **Tailwind CSS v3**, and **TypeScript**. Inspired by One UI, Nothing Phone, and Android 16 aesthetics.
 
@@ -62,7 +62,7 @@ Theme preference is saved across sessions.
 ### Install and Run
 
 ```bash
-cd "path/to/Openclaw"
+cd "path/to/Horloge"
 npm install
 npm run dev
 ```

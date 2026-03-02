@@ -48,7 +48,7 @@ export default function ToolsHub() {
                 const h = imageEl.naturalHeight * ratio;
                 doc.addImage(dataUrl, 'JPEG', (pageW - w) / 2, (pageH - h) / 2, w, h);
             }
-            doc.save('openclaw-export.pdf');
+            doc.save('horloge-export.pdf');
             setDone(true);
             setTimeout(() => setDone(false), 3000);
         } catch (err) {

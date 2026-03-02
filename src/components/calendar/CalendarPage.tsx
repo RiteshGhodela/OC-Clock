@@ -18,7 +18,7 @@ export default function CalendarPage() {
     const [month, setMonth] = useState(today.getMonth());
     const [fullscreen, setFullscreen] = useState(false);
     const [selectedKey, setSelectedKey] = useState<string | null>(null);
-    const { store, getDay, toggleTick, addNote, removeNote } = useCalendarStore();
+    const { store, getDay, toggleTick, addNote, removeNote, addEvent, removeEvent, updateEvent } = useCalendarStore();
 
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -75,6 +75,7 @@ export default function CalendarPage() {
                     const dayData = getDay(key);
                     const isTicked = dayData.ticked;
                     const hasNotes = dayData.notes.length > 0;
+                    const hasEvents = (dayData.events || []).length > 0;
 
                     return (
                         <button
@@ -101,6 +102,10 @@ export default function CalendarPage() {
                                 {isTicked && (
                                     <span style={{ fontSize: '0.45rem', color: isToday(d) ? '#000' : 'var(--accent)' }}>✓</span>
                                 )}
+                                {hasEvents && (
+                                    <span className="w-1.5 h-1.5 rounded-full"
+                                        style={{ background: isToday(d) ? '#000' : 'var(--accent)' }} />
+                                )}
                                 {hasNotes && (
                                     <span className="w-1 h-1 rounded-full"
                                         style={{ background: isToday(d) ? '#000' : 'var(--accent)' }} />
@@ -117,7 +122,10 @@ export default function CalendarPage() {
                     <span style={{ color: 'var(--accent)' }}>✓</span> Ticked
                 </span>
                 <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full inline-block" style={{ background: 'var(--accent)' }} /> Note
+                    <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ background: 'var(--accent)' }} /> Event
+                </span>
+                <span className="flex items-center gap-1">
+                    <span className="w-1 h-1 rounded-full inline-block" style={{ background: 'var(--accent)' }} /> Note
                 </span>
             </div>
         </div>
@@ -144,6 +152,9 @@ export default function CalendarPage() {
                         onToggleTick={() => toggleTick(selectedKey)}
                         onAddNote={(text) => addNote(selectedKey, text)}
                         onRemoveNote={(id) => removeNote(selectedKey, id)}
+                        onAddEvent={(ev) => addEvent(selectedKey, ev)}
+                        onRemoveEvent={(id) => removeEvent(selectedKey, id)}
+                        onUpdateEvent={(id, updates) => updateEvent(selectedKey, id, updates)}
                     />
                 )}
             </div>
@@ -175,6 +186,9 @@ export default function CalendarPage() {
                         onToggleTick={() => toggleTick(selectedKey)}
                         onAddNote={(text) => addNote(selectedKey, text)}
                         onRemoveNote={(id) => removeNote(selectedKey, id)}
+                        onAddEvent={(ev) => addEvent(selectedKey, ev)}
+                        onRemoveEvent={(id) => removeEvent(selectedKey, id)}
+                        onUpdateEvent={(id, updates) => updateEvent(selectedKey, id, updates)}
                     />
                 )}
             </div>

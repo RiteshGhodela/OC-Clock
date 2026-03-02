@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Openclaw Clock</title>
+  <title>Horloge Clock</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       width: 320px;
@@ -25,17 +30,42 @@
       padding: 10px 14px 8px;
       border-bottom: 1px solid #222;
     }
-    .header .logo { font-size: 11px; font-weight: 700; color: #ff5722; letter-spacing: 2px; text-transform: uppercase; }
-    .style-pills { display: flex; gap: 4px; }
-    .pill {
-      padding: 3px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; cursor: pointer;
-      background: #1a1a1a; color: #888; border: none; transition: all 0.2s;
+
+    .header .logo {
+      font-size: 11px;
+      font-weight: 700;
+      color: #ff5722;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
-    .pill.active { background: #ff5722; color: #000; }
+
+    .style-pills {
+      display: flex;
+      gap: 4px;
+    }
+
+    .pill {
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #1a1a1a;
+      color: #888;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .pill.active {
+      background: #ff5722;
+      color: #000;
+    }
 
     /* ── Clock Area ── */
     .clock-area {
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 24px 16px 20px;
       min-height: 160px;
     }
@@ -45,54 +75,111 @@
       font-family: 'Courier New', monospace;
       text-align: center;
     }
+
     #clock-digital .time {
-      font-size: 52px; font-weight: 900; letter-spacing: 4px;
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: 4px;
       color: #ff3c00;
       text-shadow: 0 0 20px #ff3c00, 0 0 40px #ff5010;
       line-height: 1;
     }
+
     #clock-digital .sub {
-      display: flex; justify-content: space-between; margin-top: 6px;
-      font-size: 11px; color: #ff6020; opacity: 0.7;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 11px;
+      color: #ff6020;
+      opacity: 0.7;
     }
-    #clock-digital .ampm { color: #ff3c00; font-weight: 700; font-size: 13px; }
+
+    #clock-digital .ampm {
+      color: #ff3c00;
+      font-weight: 700;
+      font-size: 13px;
+    }
 
     /* ── Analog SVG ── */
-    #clock-analog svg { display: block; }
+    #clock-analog svg {
+      display: block;
+    }
 
     /* ── Minimal ── */
     #clock-minimal {
       text-align: center;
       background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-      border-radius: 16px; padding: 20px 28px;
+      border-radius: 16px;
+      padding: 20px 28px;
     }
+
     #clock-minimal .time {
-      font-size: 46px; font-weight: 100; letter-spacing: 6px;
+      font-size: 46px;
+      font-weight: 100;
+      letter-spacing: 6px;
       color: #e2e8f0;
     }
-    #clock-minimal .colon { opacity: 0.4; animation: blink 1s step-end infinite; }
-    @keyframes blink { 50% { opacity: 0; } }
-    #clock-minimal .date { font-size: 10px; color: #64748b; margin-top: 6px; letter-spacing: 2px; text-transform: uppercase; }
+
+    #clock-minimal .colon {
+      opacity: 0.4;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    #clock-minimal .date {
+      font-size: 10px;
+      color: #64748b;
+      margin-top: 6px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
 
     /* ── Footer ── */
     .footer {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 8px 14px 10px; border-top: 1px solid #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px 10px;
+      border-top: 1px solid #1a1a1a;
     }
-    .footer .date-str { font-size: 10px; color: #444; }
+
+    .footer .date-str {
+      font-size: 10px;
+      color: #444;
+    }
+
     .format-toggle {
-      display: flex; gap: 3px;
+      display: flex;
+      gap: 3px;
     }
+
     .fmt-btn {
-      padding: 2px 7px; border-radius: 8px; font-size: 10px; font-weight: 600;
-      background: #1a1a1a; color: #555; border: none; cursor: pointer; transition: all 0.2s;
+      padding: 2px 7px;
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: 600;
+      background: #1a1a1a;
+      color: #555;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
     }
-    .fmt-btn.active { background: #ff5722; color: #000; }
+
+    .fmt-btn.active {
+      background: #ff5722;
+      color: #000;
+    }
   </style>
 </head>
+
 <body>
   <div class="header">
-    <span class="logo">⏰ Openclaw</span>
+    <span class="logo">⏰ Horloge</span>
     <div class="style-pills">
       <button class="pill active" data-style="digital">Digital</button>
       <button class="pill" data-style="analog">Analog</button>
@@ -113,18 +200,18 @@
     <!-- Analog SVG -->
     <div id="clock-analog" style="display:none">
       <svg id="analog-svg" width="180" height="180" viewBox="0 0 180 180">
-        <circle cx="90" cy="90" r="88" fill="#111" stroke="#333" stroke-width="2"/>
-        <circle cx="90" cy="90" r="80" fill="none" stroke="#ff5722" stroke-width="0.4" opacity="0.3"/>
+        <circle cx="90" cy="90" r="88" fill="#111" stroke="#333" stroke-width="2" />
+        <circle cx="90" cy="90" r="80" fill="none" stroke="#ff5722" stroke-width="0.4" opacity="0.3" />
         <!-- tick marks generated by JS -->
         <g id="ticks"></g>
         <!-- numerals 1-12 -->
         <g id="numerals"></g>
         <!-- hands -->
-        <line id="hand-h" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round"/>
-        <line id="hand-m" stroke="#e2e8f0" stroke-width="3.5" stroke-linecap="round"/>
-        <line id="hand-s" stroke="#ff5722" stroke-width="1.5" stroke-linecap="round"/>
-        <circle cx="90" cy="90" r="5" fill="#ff5722"/>
-        <circle cx="90" cy="90" r="2" fill="#0a0a0a"/>
+        <line id="hand-h" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round" />
+        <line id="hand-m" stroke="#e2e8f0" stroke-width="3.5" stroke-linecap="round" />
+        <line id="hand-s" stroke="#ff5722" stroke-width="1.5" stroke-linecap="round" />
+        <circle cx="90" cy="90" r="5" fill="#ff5722" />
+        <circle cx="90" cy="90" r="2" fill="#0a0a0a" />
       </svg>
     </div>
 
@@ -146,7 +233,7 @@
   <script>
     // ── State ──────────────────────────────────────────────────────────────
     let style = localStorage.getItem('oc_style') || 'digital';
-    let fmt   = localStorage.getItem('oc_fmt')   || '12';
+    let fmt = localStorage.getItem('oc_fmt') || '12';
 
     // ── Init analog ticks & numerals ──────────────────────────────────────
     const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -166,7 +253,7 @@
       ticks.appendChild(line);
     }
     const nums = document.getElementById('numerals');
-    ['12','1','2','3','4','5','6','7','8','9','10','11'].forEach((n, i) => {
+    ['12', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'].forEach((n, i) => {
       const a = (i * 30 - 90) * Math.PI / 180;
       const nr = R - 18;
       const t = document.createElementNS(SVG_NS, 'text');
@@ -188,8 +275,8 @@
       const h12 = h24 % 12 || 12;
       const ampm = h24 < 12 ? 'AM' : 'PM';
       const hDisp = fmt === '12' ? h12 : h24;
-      const pad = n => String(n).padStart(2,'0');
-      const dateStr = now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+      const pad = n => String(n).padStart(2, '0');
+      const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
       // Digital
       document.getElementById('dig-time').textContent = `${pad(hDisp)}:${pad(m)}:${pad(s)}`;
@@ -208,12 +295,12 @@
         el.setAttribute('x2', cx + len * Math.cos(rad));
         el.setAttribute('y2', cy + len * Math.sin(rad));
       };
-      setHand('hand-h', ((h24 % 12) + m/60) * 30, 50);
-      setHand('hand-m', (m + s/60) * 6, 68);
+      setHand('hand-h', ((h24 % 12) + m / 60) * 30, 50);
+      setHand('hand-m', (m + s / 60) * 6, 68);
       setHand('hand-s', s * 6, 76);
 
       // Footer date
-      document.getElementById('footer-date').textContent = now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+      document.getElementById('footer-date').textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
     }
 
     tick();
@@ -221,7 +308,7 @@
 
     // ── Style switching ───────────────────────────────────────────────────
     function applyStyle() {
-      ['digital','analog','minimal'].forEach(id => {
+      ['digital', 'analog', 'minimal'].forEach(id => {
         document.getElementById('clock-' + id).style.display = id === style ? '' : 'none';
       });
       document.querySelectorAll('.pill').forEach(p => {
@@ -245,4 +332,5 @@
     });
   </script>
 </body>
+
 </html>

@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Openclaw Clock",
+    "name": "Horloge Clock",
     "version": "1.0.0",
     "description": "A live clock on your browser toolbar — digital, analog, and more styles. Works offline.",
     "permissions": [],
@@ -12,7 +12,7 @@
             "48": "icons/icon48.png",
             "128": "icons/icon128.png"
         },
-        "default_title": "Openclaw Clock"
+        "default_title": "Horloge Clock"
     },
     "icons": {
         "16": "icons/icon16.png",

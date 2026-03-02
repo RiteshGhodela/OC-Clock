@@ -30,7 +30,7 @@ export interface Invoice {
     updatedAt: string;
 }
 
-const KEY = 'openclaw_invoices';
+const KEY = 'horloge_invoices';
 const genId = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
 export function useInvoiceStore() {

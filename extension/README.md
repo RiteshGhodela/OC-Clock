@@ -1,4 +1,4 @@
-## Openclaw Clock — Browser Extension
+## Horloge Clock — Browser Extension
 
 Install this extension to get a **clock directly in your browser toolbar** — accessible from any tab without opening a new page.
 
@@ -16,9 +16,9 @@ Install this extension to get a **clock directly in your browser toolbar** — a
 2. Turn on **Developer mode** (toggle in top-right corner)
 3. Click **"Load unpacked"**
 4. Select this `extension/` folder
-5. The ⏰ Openclaw Clock icon appears in your toolbar
+5. The ⏰ Horloge Clock icon appears in your toolbar
 
-> 💡 **Tip:** Pin the extension by clicking the puzzle icon 🧩 → pin Openclaw Clock
+> 💡 **Tip:** Pin the extension by clicking the puzzle icon 🧩 → pin Horloge Clock
 
 ---
 

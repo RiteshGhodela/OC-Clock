@@ -5,7 +5,7 @@ import type { DiaryEntry } from '@/hooks/useDiaryStore';
 
 interface Props {
     entry: DiaryEntry | null;  // null = new entry
-    onSave: (data: { title: string; body: string }) => void;
+    onSave: (data: { title: string; body: string; category?: string; tasks?: string[] }) => void;
     onDelete?: () => void;
     onClose: () => void;
 }
@@ -13,17 +13,85 @@ interface Props {
 export default function DiaryEditor({ entry, onSave, onDelete, onClose }: Props) {
     const [title, setTitle] = useState(entry?.title ?? '');
     const [body, setBody] = useState(entry?.body ?? '');
+    const [isProcessing, setIsProcessing] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [isRecording, setIsRecording] = useState(false);
+    const recognitionRef = useRef<any>(null);
     const overlayRef = useRef<HTMLDivElement>(null);
     const titleRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         titleRef.current?.focus();
+        if (typeof window !== 'undefined') {
+            const SpeechRecognitionInfo = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+            if (SpeechRecognitionInfo) {
+                const recognition = new SpeechRecognitionInfo();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.onresult = (event: any) => {
+                    let finalTranscript = '';
+                    for (let i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) {
+                            finalTranscript += event.results[i][0].transcript;
+                        }
+                    }
+                    if (finalTranscript) {
+                        setBody(prev => (prev + ' ' + finalTranscript).trim());
+                    }
+                };
+                recognition.onerror = (event: any) => {
+                    console.error("Speech recognition error", event.error);
+                    setIsRecording(false);
+                };
+                recognition.onend = () => {
+                    setIsRecording(false);
+                };
+                recognitionRef.current = recognition;
+            }
+        }
     }, []);
+
+    const toggleRecording = () => {
+        if (isRecording) {
+            recognitionRef.current?.stop();
+        } else {
+            recognitionRef.current?.start();
+            setIsRecording(true);
+        }
+    };
 
     const handleSave = () => {
         if (!title.trim() && !body.trim()) return;
         onSave({ title: title.trim() || 'Untitled', body });
+    };
+
+    const handleSmartSave = async () => {
+        if (!body.trim()) return;
+        setIsProcessing(true);
+        try {
+            const res = await fetch('/api/diary/process', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: body })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                onSave({
+                    title: data.title || title.trim() || 'Untitled',
+                    category: data.category,
+                    body,
+                    tasks: data.tasks
+                });
+            } else {
+                handleSave(); // fallback
+            }
+        } catch (e) {
+            console.error("Smart save failed", e);
+            handleSave(); // fallback
+        } finally {
+            setIsProcessing(false);
+        }
     };
 
     const wordCount = body.trim() ? body.trim().split(/\s+/).length : 0;
@@ -48,7 +116,15 @@ export default function DiaryEditor({ entry, onSave, onDelete, onClose }: Props)
                             {entry ? 'Edit Entry' : 'New Entry'}
                         </span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3">
+                        {recognitionRef.current && (
+                            <button
+                                onClick={toggleRecording}
+                                className="px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2 themed-transition"
+                                style={{ background: isRecording ? 'rgba(239, 68, 68, 0.2)' : 'var(--surface2)', color: isRecording ? '#ef4444' : 'var(--text-dim)' }}>
+                                <span className={isRecording ? 'animate-pulse' : ''}>🎙️</span> {isRecording ? 'Listening...' : 'Dictate'}
+                            </button>
+                        )}
                         <span className="text-xs font-mono" style={{ color: 'var(--text-dim)' }}>
                             {wordCount} word{wordCount !== 1 ? 's' : ''}
                         </span>
@@ -118,12 +194,20 @@ export default function DiaryEditor({ entry, onSave, onDelete, onClose }: Props)
                     {/* Save + Cancel */}
                     <div className="flex gap-2">
                         <button onClick={onClose}
-                            className="px-5 py-2.5 rounded-2xl text-sm"
+                            disabled={isProcessing}
+                            className="px-5 py-2.5 rounded-2xl text-sm disabled:opacity-50"
                             style={{ background: 'var(--surface2)', color: 'var(--text-dim)', border: '1px solid var(--border2)' }}>
                             Cancel
                         </button>
+                        <button onClick={handleSmartSave}
+                            disabled={isProcessing || !body.trim()}
+                            className="px-6 py-2.5 rounded-2xl text-sm font-semibold themed-transition hover:brightness-110 disabled:opacity-50 flex items-center gap-2 block lg:flex"
+                            style={{ background: 'var(--surface2)', color: 'var(--accent)', border: '1px solid var(--accent)' }}>
+                            {isProcessing ? 'Processing...' : '✨ Smart Save'}
+                        </button>
                         <button onClick={handleSave}
-                            className="px-6 py-2.5 rounded-2xl text-sm font-semibold themed-transition hover:brightness-110"
+                            disabled={isProcessing}
+                            className="px-6 py-2.5 rounded-2xl text-sm font-semibold themed-transition hover:brightness-110 disabled:opacity-50"
                             style={{ background: 'var(--accent)', color: '#000' }}>
                             Save
                         </button>

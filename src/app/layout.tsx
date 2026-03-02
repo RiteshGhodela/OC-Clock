@@ -5,7 +5,7 @@ import { SettingsProvider } from '@/context/SettingsContext';
 import AppShell from '@/components/AppShell';
 
 export const metadata: Metadata = {
-    title: 'Openclaw — Clock, Calendar & Diary',
+    title: 'Horloge — Clock, Calendar & Diary',
     description: 'A premium productivity suite with clock themes, timer, stopwatch, calendar, diary, calculators, converters, and invoice generator.',
 };
 

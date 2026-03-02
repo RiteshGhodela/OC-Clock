@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme, THEMES } from '@/context/ThemeContext';
+import MorningBriefingListener from './MorningBriefingListener';
 import clsx from 'clsx';
 import { Menu, X } from 'lucide-react';
 
@@ -247,7 +248,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                         </button>
                         <span className="text-base">{currentPage?.icon}</span>
                         <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
-                            {currentPage?.label ?? 'Openclaw'}
+                            {currentPage?.label ?? 'Horloge'}
                         </span>
                     </div>
                     <div className="flex-1" />
@@ -278,6 +279,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 {/* Ad slot */}
                 <AdSlot />
             </div>
+            <MorningBriefingListener />
         </div>
     );
 }
