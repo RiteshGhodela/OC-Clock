@@ -16,9 +16,19 @@ function generateId(): string {
 }
 
 export function useAlarmStore() {
-    const [alarms, setAlarms] = useState<Alarm[]>(() =>
-        typeof window !== 'undefined' ? getItem<Alarm[]>(STORAGE_KEY, []) : []
-    );
+    const [alarms, setAlarms] = useState<Alarm[]>([]);
+
+    useEffect(() => {
+        const load = () => setAlarms(getItem<Alarm[]>(STORAGE_KEY, []));
+        load();
+        window.addEventListener(`storage_${STORAGE_KEY}`, load);
+        const onStorage = (e: StorageEvent) => { if (e.key === STORAGE_KEY) load(); };
+        window.addEventListener('storage', onStorage);
+        return () => {
+            window.removeEventListener(`storage_${STORAGE_KEY}`, load);
+            window.removeEventListener('storage', onStorage);
+        };
+    }, []);
 
     const addAlarm = (time: string) => {
         setAlarms(prev => {

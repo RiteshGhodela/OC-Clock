@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getItem, setItem } from '@/lib/storage';
 
 export interface CalendarEvent {
@@ -26,9 +26,19 @@ function generateId(): string {
 }
 
 export function useCalendarStore() {
-    const [store, setStore] = useState<CalendarStore>(() =>
-        getItem<CalendarStore>(STORAGE_KEY, {})
-    );
+    const [store, setStore] = useState<CalendarStore>({});
+
+    useEffect(() => {
+        const load = () => setStore(getItem<CalendarStore>(STORAGE_KEY, {}));
+        load();
+        window.addEventListener(`storage_${STORAGE_KEY}`, load);
+        const onStorage = (e: StorageEvent) => { if (e.key === STORAGE_KEY) load(); };
+        window.addEventListener('storage', onStorage);
+        return () => {
+            window.removeEventListener(`storage_${STORAGE_KEY}`, load);
+            window.removeEventListener('storage', onStorage);
+        };
+    }, []);
 
     const getDay = (key: string): DayData =>
         store[key] ?? { ticked: false, notes: [], events: [] };

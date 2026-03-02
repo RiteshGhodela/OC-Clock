@@ -13,6 +13,7 @@ export function setItem<T>(key: string, value: T): void {
     if (typeof window === 'undefined') return;
     try {
         localStorage.setItem(key, JSON.stringify(value));
+        window.dispatchEvent(new Event(`storage_${key}`));
     } catch {
         /* silently fail */
     }
@@ -21,4 +22,5 @@ export function setItem<T>(key: string, value: T): void {
 export function removeItem(key: string): void {
     if (typeof window === 'undefined') return;
     localStorage.removeItem(key);
+    window.dispatchEvent(new Event(`storage_${key}`));
 }

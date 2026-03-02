@@ -68,9 +68,11 @@ const SettingsContext = createContext<SettingsContextType>({
 const STORAGE_KEY = 'horloge_settings_v2';
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
-    const [settings, setSettings] = useState<Settings>(() =>
-        getItem<Settings>(STORAGE_KEY, defaults)
-    );
+    const [settings, setSettings] = useState<Settings>(defaults);
+
+    useEffect(() => {
+        setSettings(getItem<Settings>(STORAGE_KEY, defaults));
+    }, []);
 
     const update = (patch: Partial<Settings>) => {
         setSettings(prev => {

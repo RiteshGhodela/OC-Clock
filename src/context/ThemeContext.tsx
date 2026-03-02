@@ -55,15 +55,14 @@ const ThemeContext = createContext<ThemeContextType>({
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const [theme, setThemeState] = useState<Theme>(() => {
-        // Read synchronously to avoid a theme flash on load.
-        // getItem guards against SSR with typeof window === 'undefined'.
-        if (typeof window !== 'undefined') {
-            const saved = localStorage.getItem('horloge_theme') as Theme | null;
-            if (saved && THEMES.find(t => t.value === saved)) return saved;
+    const [theme, setThemeState] = useState<Theme>('nothing');
+
+    useEffect(() => {
+        const saved = localStorage.getItem('horloge_theme') as Theme | null;
+        if (saved && THEMES.find(t => t.value === saved)) {
+            setThemeState(saved);
         }
-        return 'nothing';
-    });
+    }, []);
 
     const setTheme = (t: Theme) => {
         setThemeState(t);

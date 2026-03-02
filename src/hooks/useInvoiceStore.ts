@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getItem, setItem } from '@/lib/storage';
 
 export interface LineItem {
@@ -34,9 +34,19 @@ const KEY = 'horloge_invoices';
 const genId = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
 export function useInvoiceStore() {
-    const [invoices, setInvoices] = useState<Invoice[]>(() =>
-        getItem<Invoice[]>(KEY, [])
-    );
+    const [invoices, setInvoices] = useState<Invoice[]>([]);
+
+    useEffect(() => {
+        const load = () => setInvoices(getItem<Invoice[]>(KEY, []));
+        load();
+        window.addEventListener(`storage_${KEY}`, load);
+        const onStorage = (e: StorageEvent) => { if (e.key === KEY) load(); };
+        window.addEventListener('storage', onStorage);
+        return () => {
+            window.removeEventListener(`storage_${KEY}`, load);
+            window.removeEventListener('storage', onStorage);
+        };
+    }, []);
 
     const save = (inv: Partial<Invoice> & { id?: string }): Invoice => {
         const now = new Date().toISOString();

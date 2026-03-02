@@ -1,6 +1,8 @@
 # Horloge — Clock, Calendar & Diary
 
-A premium time management and productivity app built with **Next.js 14**, **Tailwind CSS v3**, and **TypeScript**. Inspired by One UI, Nothing Phone, and Android 16 aesthetics.
+A premium time management and productivity app built with **Next.js 14**, **Tailwind CSS v3**, and **TypeScript**. Inspired by One UI, Nothing Phone, and Android 16 aesthetics. 
+
+🌍 **Live Demo:** [https://oc-clock.vercel.app/](https://oc-clock.vercel.app/)
 
 ---
 
@@ -27,17 +29,23 @@ A premium time management and productivity app built with **Next.js 14**, **Tail
 
 ### 📅 Calendar
 - Full monthly grid with Prev/Next month navigation
-- **Ticks** — Mark any day as done with a ✓ indicator
-- **Notes** — Add, delete per-day text notes
+- **Event Scheduling** — Add events with Start/End times and Priorities
+- **Conflict Resolver** — Auto-detects overlapping events and suggests free time slots
+- **Ticks & Notes** — Mark any day as done or add text notes
 - **Full-Screen Mode** — Expanded immersive calendar view
-- Click any day to open the day detail modal
 
 ### 📓 Diary
 - Create entries with title + body
-- Card grid view with date badge and body snippet
-- Word count display while editing
-- Delete with confirmation dialog
+- **Voice Dictation** — Use browser Web Speech API to dictate entries
+- **AI Smart Save** — Uses Gemini AI to auto-categorize entries and extract actionable tasks directly to your Calendar
+- Card grid view with date badge and category
 - All data persisted to `localStorage`
+
+### 🌅 Morning Briefing (Alarms)
+- Set daily alarms
+- **AI Briefing** — When an alarm rings, Horloge summarizes your daily Agenda, Weather, and recent Diary thoughts using Gemini AI.
+- **Audio Playback** — Your briefing is read aloud to you using the Web Speech API.
+- **Telegram Delivery** — Your briefing is additionally sent to your mobile via Telegram Bot.
 
 ---
 
@@ -145,14 +153,18 @@ Click **⛶ Full Screen** button at the top-right of the Clock page.
 1. Click **Start** → **Lap** to record lap times → **Stop** → **Reset**
 2. Lap history shows total and split times
 
-### Calendar
-1. Navigate months with ‹ and › arrows
-2. Click any day cell to open the day modal
-3. Toggle the ✓ tick or add text notes
-4. Notes and ticks persist across sessions and page reloads
+### Calendar & Conflict Resolver
+1. Click any day cell to open the day modal
+2. Add a new **Event** with Start and End times.
+3. If the time overlaps with an existing event, the **Conflict Resolver** will automatically suggest a new available time slot.
 
-### Diary
+### Voice Diary & AI Smart Save
 1. Click **+ New Entry** to open the editor
-2. Type a title and body
-3. Click **Save** — entry appears in the card grid
-4. Click any card to edit or delete it
+2. Click **Dictate** to speak your thoughts.
+3. Click **Smart Save (AI)**. Horloge will use Gemini to auto-generate a title, categorize your entry, and extract any actionable tasks directly into your Calendar!
+
+### Morning Briefing & Alarms
+1. Go to the **Alarm** tab on the main Clock page.
+2. Add a daily alarm.
+3. Keep the tab open. When the time arrives, a **Wake Up Modal** will appear with a ringing animation.
+4. Click **Stop & Play Briefing** to hear an AI-generated personalized spoken summary of your day!

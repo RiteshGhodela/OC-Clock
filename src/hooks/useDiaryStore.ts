@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getItem, setItem } from '@/lib/storage';
 
 export interface DiaryEntry {
@@ -19,9 +19,19 @@ function generateId(): string {
 }
 
 export function useDiaryStore() {
-    const [entries, setEntries] = useState<DiaryEntry[]>(() =>
-        getItem<DiaryEntry[]>(STORAGE_KEY, [])
-    );
+    const [entries, setEntries] = useState<DiaryEntry[]>([]);
+
+    useEffect(() => {
+        const load = () => setEntries(getItem<DiaryEntry[]>(STORAGE_KEY, []));
+        load();
+        window.addEventListener(`storage_${STORAGE_KEY}`, load);
+        const onStorage = (e: StorageEvent) => { if (e.key === STORAGE_KEY) load(); };
+        window.addEventListener('storage', onStorage);
+        return () => {
+            window.removeEventListener(`storage_${STORAGE_KEY}`, load);
+            window.removeEventListener('storage', onStorage);
+        };
+    }, []);
 
     const save = (data: { id?: string; title: string; body: string; category?: string }) => {
         const now = new Date().toISOString();

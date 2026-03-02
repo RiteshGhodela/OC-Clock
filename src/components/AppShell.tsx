@@ -18,35 +18,6 @@ const navItems = [
     { href: '/invoice', icon: '🧾', label: 'Invoice' },
 ];
 
-// ── Non-intrusive Ad Slot ─────────────────────────────────────────────────────
-function AdSlot() {
-    const [dismissed, setDismissed] = useState(false);
-    if (dismissed) return null;
-    return (
-        <div style={{
-            height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            borderTop: '1px solid var(--border)', background: 'var(--surface)',
-            padding: '0 16px', gap: 12, flexShrink: 0,
-        }}>
-            <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: 'var(--text-dim)', opacity: 0.4, textTransform: 'uppercase' }}>AD</span>
-            {/* ↓ Replace with real ad tag (Google AdSense etc.) */}
-            <div style={{
-                flex: 1, maxWidth: 728, height: 28, borderRadius: 6,
-                background: 'var(--surface2)', border: '1px dashed var(--border2)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-                <span style={{ fontSize: 10, color: 'var(--text-dim)', opacity: 0.35 }}>Advertisement — 728 × 28</span>
-            </div>
-            <button onClick={() => setDismissed(true)} title="Dismiss ad"
-                style={{
-                    width: 20, height: 20, borderRadius: '50%', border: 'none', cursor: 'pointer',
-                    background: 'var(--surface2)', color: 'var(--text-dim)', fontSize: 10, flexShrink: 0,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.4,
-                }}>✕</button>
-        </div>
-    );
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 export default function AppShell({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -239,13 +210,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                     initial={{ y: -64, opacity: 0 }}
                     transition={{ type: 'spring', stiffness: 360, damping: 36 }}>
                     <div className="flex items-center gap-3">
-                        <button
-                            onClick={() => setSidebarOpen(true)}
-                            className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg themed-transition hover:bg-black/10 dark:hover:bg-white/10"
-                            style={{ color: 'var(--text)' }}
-                        >
-                            <Menu size={20} />
-                        </button>
+                        {/* Removed Top Mobile Menu Button */}
                         <span className="text-base">{currentPage?.icon}</span>
                         <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
                             {currentPage?.label ?? 'Horloge'}
@@ -276,8 +241,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                     </motion.main>
                 </AnimatePresence>
 
-                {/* Ad slot */}
-                <AdSlot />
+                {/* Bottom Center FAB for Mobile Menu */}
+                <button
+                    onClick={() => setSidebarOpen(true)}
+                    className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center justify-center w-14 h-14 rounded-full shadow-2xl themed-transition"
+                    style={{ background: 'var(--accent)', color: '#000', border: '4px solid var(--bg)' }}
+                >
+                    <Menu size={24} />
+                </button>
             </div>
             <MorningBriefingListener />
         </div>
