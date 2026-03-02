@@ -10,53 +10,29 @@ export async function POST(req: Request) {
         const { messages, entryTitle, entryBody } = body;
 
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-        // Build the system prompt or context
-        const systemPrompt = `
-You are an AI assistant helping the user write and brainstorm for their personal diary / notes app called Horloge.
+        const systemPrompt = `You are an AI assistant helping the user write and brainstorm for their personal diary / notes app called Horloge.
 The user is currently writing an entry titled: "${entryTitle || 'Untitled'}"
 The current content of the entry is:
 """
 ${entryBody || '(Empty)'}
 """
-Provide helpful, creative, and concise responses to assist them. If they ask you to write something, provide the text clearly so they can insert it into their diary.
-`;
+Provide helpful, creative, and concise responses to assist them. If they ask you to write something, provide the text clearly so they can insert it into their diary.`;
 
-        const chat = model.startChat({
-            history: [
-                { role: "user", parts: [{ text: "System Context: " + systemPrompt }] },
-                { role: "model", parts: [{ text: "Understood. I'm ready to help." }] },
-                // Map the frontend messages (role: 'user' | 'assistant') to Gemini roles ('user' | 'model')
-                ...(messages || []).map((m: any) => ({
-                    role: m.role === 'assistant' ? 'model' : 'user',
-                    parts: [{ text: m.content }]
-                }))
-            ]
+        const model = genAI.getGenerativeModel({
+            model: "gemini-1.5-flash",
+            systemInstruction: systemPrompt
         });
 
-        // The last message in the frontend history is what we want to send, but we just passed the whole history
-        // Actually, we should send the last message via sendMessage, and the rest as history.
-        // Let's refactor:
+        const historyMessages = messages ? messages.slice(0, -1) : [];
+        const latestMessage = messages && messages.length > 0
+            ? messages[messages.length - 1].content
+            : "Hello!";
 
-        let actualHistory: any[] = [];
-        let latestMessage = "";
-
-        if (messages && messages.length > 0) {
-            const historyMessages = messages.slice(0, -1);
-            latestMessage = messages[messages.length - 1].content;
-
-            actualHistory = [
-                { role: "user", parts: [{ text: "System Context: " + systemPrompt }] },
-                { role: "model", parts: [{ text: "Understood. I'm ready to help." }] },
-                ...historyMessages.map((m: any) => ({
-                    role: m.role === 'assistant' ? 'model' : 'user',
-                    parts: [{ text: m.content }]
-                }))
-            ];
-        } else {
-            latestMessage = "Hello!";
-        }
+        const actualHistory = historyMessages.map((m: any) => ({
+            role: m.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: m.content }]
+        }));
 
         const chatSession = model.startChat({ history: actualHistory });
         const result = await chatSession.sendMessage(latestMessage);
